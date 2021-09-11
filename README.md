@@ -1,4 +1,4 @@
-## Code supporting my master Thesis thesis (in progress) with working title "An Unsupervised Learning Approach to Unveil Latent Job Requirements From Job Postings"
+## Code supporting my master Thesis thesis (in progress) with working title "Artificial Intelligence Driven Methods for the Analysis of Job Postings"
 Welcome, this repository is initially meant to be used to colaborate and share the code supporting my mater's Thesis. 
 After the writing phase this repository is supposed to remain online in order to support the thesis.
 

@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+    vacancy_analysis:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            - JUPYTER_TOKEN=Thesis
+        volumes:
+            - ./:/home/jovyan/work
+        ports: 
+            - 8889:8888
+        container_name: thesis_container

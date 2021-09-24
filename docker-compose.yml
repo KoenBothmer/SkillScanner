@@ -11,4 +11,5 @@ services:
         ports: 
             - 8889:8888
             - 40000:40000
+            - 40001:40001
         container_name: thesis_container

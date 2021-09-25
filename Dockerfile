@@ -12,3 +12,4 @@ RUN pip3 install sent2vec --no-cache-dir
 RUN pip install sentence-transformers
 RUN pip install torch
 RUN pip install pdfplumber
+RUN pip install umap-learn

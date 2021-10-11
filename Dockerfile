@@ -13,3 +13,5 @@ RUN pip install sentence-transformers
 RUN pip install torch
 RUN pip install pdfplumber
 RUN pip install umap-learn
+RUN pip install flask
+RUN pip install FPDF

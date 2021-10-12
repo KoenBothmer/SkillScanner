@@ -4,5 +4,5 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
-#RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
+RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]

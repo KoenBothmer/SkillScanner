@@ -15,3 +15,4 @@ RUN pip install pdfplumber
 RUN pip install umap-learn
 RUN pip install flask
 RUN pip install FPDF
+RUN pip install session-info

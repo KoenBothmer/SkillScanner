@@ -1,6 +1,12 @@
 docker build --tag embeddings .
 docker run --publish 5000:5000 embeddings
 
+Submitting Docker Image
+gcloud builds submit --tag gcr.io/thesis-clustering/clusterer
+
+Deploy Container
+gcloud run deploy --image gcr.io/thesis-clustering/clusterer --platform managed --port 5000 --memory 2G
+
 /usr/local/lib/python3.8/site-packages/sklearn/base.py:324: UserWarning: Trying to unpickle estimator KMeans from version 0.23.1 when using version 1.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
 https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
   warnings.warn(
@@ -16,3 +22,10 @@ To disable this warning, you can either:
         - Avoid using `tokenizers` before the fork if possible
         - Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
 172.17.0.1 - - [12/Oct/2021 21:33:00] "GET / HTTP/1.1" 200 -
+
+DONE
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                                          IMAGES                                        STATUS
+4c232139-b656-4cdc-823c-c5bea59d52a8  2021-10-13T20:49:44+00:00  8M7S      gs://thesis-clustering_cloudbuild/source/1634158182.29475-8675d8521ad7403ea342edb12362b9a2.tgz  gcr.io/thesis-clustering/clusterer (+1 more)  SUCCESS
+
+https://clusterer-x3gfl3cnea-ew.a.run.app

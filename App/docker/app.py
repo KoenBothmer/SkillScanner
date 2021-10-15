@@ -17,6 +17,8 @@ import plotly as plt
 import numpy as np
 import plotly.express as px
 
+from functions import return_pdf, get_plot, get_table
+
 k31_full = pickle.load(open('k_31_full', 'rb'))
 cluster_label_bigrams = pickle.load(open('cluster_label_bigrams','rb')) 
 cluster_importance = pickle.load(open('cluster_importance', 'rb'))
@@ -48,6 +50,11 @@ class NameForm(FlaskForm):
     skill_13 = StringField('Optional additional skill')
     skill_14 = StringField('Optional additional skill')
     skill_15 = StringField('Optional additional skill')
+    skill_16 = StringField('Optional additional skill')
+    skill_17 = StringField('Optional additional skill')
+    skill_18 = StringField('Optional additional skill')
+    skill_19 = StringField('Optional additional skill')
+    skill_20 = StringField('Optional additional skill')
     submit = SubmitField('Download Report')
 
 # all Flask routes below
@@ -76,6 +83,11 @@ def index():
         skills.append(form.skill_13.data)
         skills.append(form.skill_14.data)
         skills.append(form.skill_15.data)
+        skills.append(form.skill_16.data)
+        skills.append(form.skill_17.data)
+        skills.append(form.skill_18.data)
+        skills.append(form.skill_19.data)
+        skills.append(form.skill_20.data)
   
         pdf = return_pdf(skills)
         pdf.output('report.pdf', 'F')
@@ -92,64 +104,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-def return_pdf(skills):
-    plot = get_plot(skills)
-    plot.write_image("fig1.png")
-    pdf=FPDF()
-    pdf.add_page()
-    pdf.image('fig1.png',x = 10, y = 10, w = 100, h = 100, type = '', link = '')
-    pdf.set_font('Arial', 'B', 16)
-    pdf.cell(40, 0, 'Data Scientist CV Review Report')
-    pdf.set_font('Arial', '', 12)
-    pdf.cell(20,250, 'This is a v0 test document to see if we can pass visuals and text to pdf through flask based on form input', align = "L", fill = 'T', border='1')
-    return pdf
-
-def get_plot(cv): #takes in list of skills and returns a plot with score for each cluster
-    df_sim = pd.DataFrame()
-    df_sim['cluster'] = range(len(k31_full.cluster_centers_))
-    
-    labels = cluster_label_bigrams
-    importance = cluster_importance
-    
-    model = 'all-distilroberta-v1'
-    model = SentenceTransformer(model)
-    embeddings_cv = model.encode(cv)
-    embeddings_f = embeddings_cv.astype(float)
-    clusters_cv = k31_full.predict(embeddings_f)
-    clusters_cv_l  = clusters_cv.tolist()
-    
-    cv_scores = []
-    for i, cluster in enumerate(clusters_cv):
-        cv_scores.append(util.pytorch_cos_sim(k31_full.cluster_centers_[cluster], embeddings_f[i]).item())
-    
-    scores = []
-    for cluster in range(len(k31_full.cluster_centers_)):
-        if cluster not in clusters_cv_l:
-            scores.append(0)
-        else:
-            score = 0
-            indexes = np.where(clusters_cv==cluster)[0]
-            for i in indexes:
-                if cv_scores[i] > score:
-                    score = cv_scores[i]
-            scores.append(score)   
-    
-    df_sim['score'] = scores
-    df_sim['importance'] = importance
-    df_sim['labels'] = labels
-    
-    df_sim['CV_similarity'] = df_sim['importance']*df_sim['score']
-    df_sim['Importance_Cluster_in_Job_Postings'] = df_sim['importance']-df_sim['CV_similarity']
-    df_sim = df_sim.sort_values('importance')
-    
-    fig = px.bar(df_sim, y='labels', x=["CV_similarity","Importance_Cluster_in_Job_Postings"], hover_data = ['importance'])
-    fig.update_layout(height=800, \
-                          title = 'Author\'s CV similarity to requirement clusters in context of relative cluster presence',\
-                          barmode='stack', \
-                          yaxis_title="3 most common Bigrams in Cluster",\
-                          xaxis_title="CV Similarity to Cluster")
-    fig.show()
-    return fig
 
 # keep this as is
 if __name__ == '__main__':

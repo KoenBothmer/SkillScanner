@@ -5,7 +5,7 @@ Submitting Docker Image
 gcloud builds submit --tag gcr.io/thesis-clustering/clusterer
 
 Deploy Container
-gcloud run deploy --image gcr.io/thesis-clustering/clusterer --platform managed --port 5000 --memory 2G
+gcloud run deploy --image gcr.io/thesis-clustering/clusterer --platform managed --port 5000 --memory 4G
 
 /usr/local/lib/python3.8/site-packages/sklearn/base.py:324: UserWarning: Trying to unpickle estimator KMeans from version 0.23.1 when using version 1.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
 https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations

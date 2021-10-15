@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+    app_testing:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            - JUPYTER_TOKEN=Thesis
+        volumes:
+            - ./:/home/jovyan/work
+        ports: 
+            - 8887:8888
+        container_name: app_testing

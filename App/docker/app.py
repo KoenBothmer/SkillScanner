@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 
 from sentence_transformers import SentenceTransformer, util
@@ -35,6 +35,7 @@ Bootstrap(app)
 # "NameForm" can change; "(FlaskForm)" cannot
 # see the route for "/" and "index.html" to see how this is used
 class NameForm(FlaskForm):
+    Job_Title = SelectField(u'Select job title to analyze your skillset on', choices=['Data Scientist','more to come'])
     skill_1 = StringField('Just pass the first skill', validators=[DataRequired()])
     skill_2 = StringField('Just pass the second skill', validators=[DataRequired()])
     skill_3 = StringField('Optional additional skill')

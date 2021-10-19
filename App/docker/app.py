@@ -35,27 +35,27 @@ Bootstrap(app)
 # "NameForm" can change; "(FlaskForm)" cannot
 # see the route for "/" and "index.html" to see how this is used
 class NameForm(FlaskForm):
-    Job_Title = SelectField(u'Select job title to analyze your skillset on', choices=['Data Scientist','more to come'])
-    skill_1 = StringField('Just pass the first skill', validators=[DataRequired()])
-    skill_2 = StringField('Just pass the second skill', validators=[DataRequired()])
-    skill_3 = StringField('Optional additional skill')
-    skill_4 = StringField('Optional additional skill')
-    skill_5 = StringField('Optional additional skill')
-    skill_6 = StringField('Optional additional skill')
-    skill_7 = StringField('Optional additional skill')
-    skill_8 = StringField('Optional additional skill')
-    skill_9 = StringField('Optional additional skill')
-    skill_10 = StringField('Optional additional skill')
-    skill_11 = StringField('Optional additional skill')
-    skill_12 = StringField('Optional additional skill')
-    skill_13 = StringField('Optional additional skill')
-    skill_14 = StringField('Optional additional skill')
-    skill_15 = StringField('Optional additional skill')
-    skill_16 = StringField('Optional additional skill')
-    skill_17 = StringField('Optional additional skill')
-    skill_18 = StringField('Optional additional skill')
-    skill_19 = StringField('Optional additional skill')
-    skill_20 = StringField('Optional additional skill')
+    Job_Title = SelectField(u'Job Title', choices=['Data Scientist','more to come'])
+    skill_1 = StringField('Please enter at least 2 skills', validators=[DataRequired()])
+    skill_2 = StringField(validators=[DataRequired()])
+    skill_3 = StringField()
+    skill_4 = StringField()
+    skill_5 = StringField()
+    skill_6 = StringField()
+    skill_7 = StringField()
+    skill_8 = StringField()
+    skill_9 = StringField()
+    skill_10 = StringField()
+    skill_11 = StringField()
+    skill_12 = StringField()
+    skill_13 = StringField()
+    skill_14 = StringField()
+    skill_15 = StringField()
+    skill_16 = StringField()
+    skill_17 = StringField()
+    skill_18 = StringField()
+    skill_19 = StringField()
+    skill_20 = StringField()
     submit = SubmitField('Download Report')
 
 # all Flask routes below
@@ -89,6 +89,12 @@ def index():
         skills.append(form.skill_18.data)
         skills.append(form.skill_19.data)
         skills.append(form.skill_20.data)
+        
+        skills_ = skills
+        skills=[]
+        for skill in skills_: # remove empty skills
+            if len(skill)>0:
+                skills.append(skill)
   
         pdf = return_pdf(skills)
         pdf.output('report.pdf', 'F')

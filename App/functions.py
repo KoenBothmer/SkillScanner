@@ -61,7 +61,7 @@ def return_pdf(skills):
     pdf.add_page()
     
     pdf.set_font('Arial', 'B', 14) #setting font for title
-    pdf.cell(40, 0, 'Skill Scanner CV Report - Data Scientist', ln=2) #Write Title
+    pdf.cell(40, 0, 'Data Scientist CV Review Report', ln=2) #Write Title
     pdf.set_font('Arial', '', 9) #setting font for text cells
     pdf.set_xy(10,15) #place cursor
     pdf.multi_cell(w=190, h=5, txt=intro, align='J')

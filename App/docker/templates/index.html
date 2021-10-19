@@ -3,6 +3,7 @@
 
 {% block styles %}
 {{ super() }}
+	<title>Skill Scanner CV Review </title>
 	<style>
 		body { background: #e8f1f9; }
 	</style>
@@ -10,7 +11,7 @@
 
 
 {% block title %}
-Data Scientist CV Review
+Skill Scanner CV Review - Data Scientist
 {% endblock %}
 
 
@@ -20,9 +21,10 @@ Data Scientist CV Review
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-      <h1 class="pt-5 pb-2">This form allows you to test functionality of the CV review use case described in my Thesis</h1>
+      <h1 class="pt-5 pb-2">Skill Scanner CV Review - Data Scientist</h1>
 
-      <p class="lead">Fill this form with skills, work experience and education as you would put in bullet points on your CV</p>
+      <p class="lead">Please enter all hard and soft skills from your CV</br>
+	  <p style="font-size:13px"><i>** In this proof of concept you have to manually input each skill, in the future you will be able to upload a CV to Skill Scanner as a document</i></p>
 
       {{ wtf.quick_form(form) }}
 

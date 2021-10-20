@@ -52,10 +52,14 @@ def return_pdf(skills):
     df_sim = analysis[2]
     cv_scores = analysis[3]
     
-    plot.write_image("fig1.png", scale=1)#, width=500, height=750)
+    plot.write_image("fig1.png", scale=1)
     
     table = get_table(cv_scores)
     table.write_image("table1.png")
+    
+    total_score = df['score'].sum()/len(k31_full.cluster_centers_)*100
+    overview = get_overview(total_score)
+    overview.write_image("overview1.png")
     
     pdf=FPDF('P', 'mm', 'A4')
     pdf.add_page()
@@ -67,40 +71,34 @@ def return_pdf(skills):
     pdf.multi_cell(w=190, h=5, txt=intro, align='J')
     
     #Total Score Output
-    total_score = df['score'].mean()
     total_score_s = str(round(total_score,2))
-    competition_mean = 0.49
-    competition_mean_s = "0.49"
-    top10 = 0.72
-    top10_s = "0.72"
-    top25 = 0.67
-    top25_s = "0.67"
-    top50 = 0.61
-    top50_s = "0.61"
+    competition_mean = 49
+    competition_mean_s = "49"
+    top10 = 72
+    top10_s = "72"
+    top25 = 67
+    top25_s = "67"
+    top50 = 61
+    top50_s = "61"
     text = "Your total score is "+total_score_s+" This is "
     if total_score<competition_mean:
-        text = text+"a low score in comparison to a dataset of 65 Data Scientist CV's. "
+        text = text+" below average for a Data Scientist CV:"
     elif total_score<top25:
-        text = text+"an average score in comparison to a dataset of 65 Data Scientist CV's. "
-        if(total_score<top50):
-            text = text+"Please note that allthough you score is average, more than 50% of Data Scientist CV's score better than yours. "
+        text = text+"an average score for a Data Scientist CV:"
     else:
-        text = text+"a high score in comparison to a dataset of 65 Data Scientist CV's. "
-    text = text+"The mean score among these data scientist CV's is "\
-    +competition_mean_s+". The top 10% of these CV's scored "+top10_s \
-    +". The top 25% of these CV's scored "+top25_s+". The top 50% of these CV's scored "+top50_s+"."
-    
+        text = text+"a high score for a Data Scientist CV:"
     text = text.encode('latin-1', 'replace').decode('latin-1')
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
     pdf.set_font('Arial', 'B', 11) #setting font for title
-    pdf.cell(40, 0, 'Your Score: '+total_score_s, ln=2) #Write Title
+    pdf.cell(40, 0, 'Your Score: '+total_score_s+"%", ln=2) #Write Title
     pdf.set_font('Arial', '', 9)
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
     pdf.multi_cell(w=190, h=5, txt=text)
+    pdf.image('overview1.png', w=200)
     
-    pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
+    pdf.add_page()
     pdf.set_font('Arial', 'B', 11) #setting font for title
-    pdf.cell(40, 0, 'Comparrison Plot', ln=2) #Write Title
+    pdf.cell(40, 0, 'Comparison Plot', ln=2) #Write Title
     pdf.set_font('Arial', '', 9)
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
     pdf.multi_cell(w=190, h=5, txt=plot_explanation)
@@ -140,7 +138,7 @@ def return_pdf(skills):
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
     pdf.multi_cell(w=190, h=5, txt=table_description)
     pdf.set_xy(pdf.get_x(),pdf.get_y()+5)
-    pdf.image('table1.png',w=200)
+    pdf.image('table1.png',w=190)
     return pdf
    
 def get_plot(cv): #takes in list of skills and returns a plot with score for each cluster
@@ -183,17 +181,22 @@ def get_plot(cv): #takes in list of skills and returns a plot with score for eac
     df_sim['importance'] = importance
     df_sim['labels'] = labels
     
-    df_sim['CV_similarity'] = df_sim['importance']*df_sim['score']
-    df_sim['Importance_Cluster_in_Job_Postings'] = df_sim['importance']-df_sim['CV_similarity']
+    df_sim['Your Coverage'] = df_sim['importance']*df_sim['score']
+    df_sim['Skill Group Importance'] = df_sim['importance']-df_sim['Your Coverage']
     df_sim = df_sim.sort_values('importance')
     
-    fig = px.bar(df_sim, y='labels', x=["CV_similarity","Importance_Cluster_in_Job_Postings"], hover_data = ['importance'])
-    fig.update_layout(height=2*300, width=3*300, \
+    fig = px.bar(df_sim, y='labels', x=["Your Coverage","Skill Group Importance"], hover_data = ['importance'])
+    fig.update_layout(height=2.3*300, width=3*300, \
                           #font=dict(size=10),\
                           title = 'Input CV Similarity to Requirements in Job Postings',\
                           barmode='stack', \
-                          yaxis_title="Common Bigrams in Cluster",\
-                          xaxis_title="CV Similarity to Cluster")
+                          legend_title_text = '', \
+                          yaxis_title="Importance",\
+                          xaxis_title="Coverage",\
+                          legend=dict(yanchor="bottom",y=0,xanchor="right",x=1
+                        
+                ))
+    fig.update_xaxes(showticklabels=False)
     return fig, df_report, df_sim, scores
     
 def get_table(scores):
@@ -218,6 +221,38 @@ def get_table(scores):
         header=dict(values=['Skill Cluster','Your Score','Average','Top 10%','Top 25%', 'Top 50%']),
         cells=dict(values=[labels, scores,mean,top10,top25,top50]))])
     
-    fig.update_layout(height = 2.9*300, width = 3*300)
+    fig.update_layout(height = 4*300, width = 3*300)
+    
+    return(fig)
+    
+def get_overview(score):
+    
+    fill_color = []
+    n = 5
+
+    vals = [round(score, 2),72,67,61,49]
+    
+    fill_color = []
+    for v in vals:
+        if v<=vals[4]:#less then average
+            fill_color.append('#ffcccc')
+        elif v<vals[3]:#less than top50
+            fill_color.append('#fff5e6')
+        elif v<vals[2]:#less than top25
+            fill_color.append('#e6ffb3')
+        else:
+            fill_color.append('#ccffcc')
+        
+    vals = ['<b>'+str(round(score, 2))+'</b>',49,72,67,61]    
+    
+    
+    fig = go.Figure(data=[go.Table(
+        columnwidth = [100,100],
+        header=dict(values=['<b>Your CV Coverage [%]</b>','Data Scientist<br>Top 10% [%]','Data Scientist <br>Top 25% [%]', 'Data Scientist<br>Top 50% [%]','Data Scientist<br>Average [%]']),
+        cells=dict(values=vals, fill_color = fill_color)
+    )])
+    
+    
+    fig.update_layout(height = 0.9*300, width = 3*300)
     
     return(fig)

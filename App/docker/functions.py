@@ -21,8 +21,12 @@ import plotly.graph_objects as go
 k31_full = pickle.load(open('k_31_full', 'rb'))
 cluster_label_bigrams = pickle.load(open('cluster_label_bigrams','rb')) 
 cluster_importance = pickle.load(open('cluster_importance', 'rb'))
+cluster_labels_unformated = []
+for label in cluster_label_bigrams:
+    cluster_labels_unformated.append(label.replace("</b>","").replace("<b>",""))
 
 df_cv_summary = pd.read_csv('df_cv_summary.csv',index_col=0)
+df_handbook = pd.read_csv('handbook.csv')
 
 file = open("text/intro.txt")
 intro = file.read()#.replace("\n", " ")
@@ -45,12 +49,25 @@ table_description = file.read().replace("/n", " ").replace("\br", "\n")
 table_description = table_description.encode('latin-1', 'replace').decode('latin-1')
 file.close()
 
+file = open("text/recommendation_description.txt")
+recommendation_description = file.read().replace("/n", " ").replace("\br", "\n")
+recommendation_description = recommendation_description.encode('latin-1', 'replace').decode('latin-1')
+file.close()
+
+file = open("text/methodology_description.txt")
+methodology_description = file.read().replace("/n", " ").replace("\br", "\n")
+methodology_description = methodology_description.encode('latin-1', 'replace').decode('latin-1')
+file.close()
+
 def return_pdf(skills):
     analysis = get_plot(skills)
     plot = analysis[0]
     df = analysis[1]
     df_sim = analysis[2]
     cv_scores = analysis[3]
+    
+    recommendation_plot=get_recommendation(df_sim)
+    recommendation_plot.write_image("recommendation1.png",scale=1)
     
     plot.write_image("fig1.png", scale=1)
     
@@ -70,6 +87,12 @@ def return_pdf(skills):
     pdf.set_xy(10,15) #place cursor
     pdf.multi_cell(w=190, h=5, txt=intro, align='J')
     
+    #sketch visual
+    pdf.set_font('Arial', 'I', 9) #setting font for text cells
+    pdf.set_xy(pdf.get_x()+50, pdf.get_y()+5)
+    pdf.image('img/sketch.png',w=100)
+    pdf.multi_cell(w=190, h=5, txt = 'Skill Scanner uses AI to extract and compare skills from three sources')
+    
     #Total Score Output
     total_score_s = str(round(total_score,2))
     competition_mean = 49
@@ -88,9 +111,9 @@ def return_pdf(skills):
     else:
         text = text+"a high score for a Data Scientist CV:"
     text = text.encode('latin-1', 'replace').decode('latin-1')
-    pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
+    pdf.set_xy(10, pdf.get_y()+5)
     pdf.set_font('Arial', 'B', 11) #setting font for title
-    pdf.cell(40, 0, 'Your Score: '+total_score_s+"%", ln=2) #Write Title
+    pdf.cell(40, 0, 'Your CV Coverage Score: '+total_score_s+"%", ln=2) #Write Title
     pdf.set_font('Arial', '', 9)
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
     pdf.multi_cell(w=190, h=5, txt=text)
@@ -105,21 +128,43 @@ def return_pdf(skills):
     
     pdf.image('fig1.png', w=200)#x = pdf.get_x, y = 15, w = 200)#, h = 200, type = '', link = '')
     
+    pdf.set_font('Arial', 'I', 9)
+    pdf.multi_cell(w=190, h=5, txt = '** Please Note: A coverage of 100% is impossible to attain, a coverage of over 70% can be considered excellent.')
+    
     pdf.add_page()
     pdf.set_font('Arial', 'B', 11) #setting font for title
-    pdf.cell(40, 0, 'Analysis per input skill', ln=2) #Write Title
+    pdf.cell(40, 0, 'Learning Program Recommendation', ln=2) #Write Title
+    pdf.set_font('Arial', '', 9)
+    pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
+    pdf.multi_cell(w=190, h=5, txt=recommendation_description)
+    pdf.set_xy(pdf.get_x(),pdf.get_y()+5)
+    pdf.image('recommendation1.png',w=200)
+    
+    
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 11) #setting font for title
+    pdf.cell(40, 0, 'Your score compared to Data Scientist CV\'s', ln=2) #Write Title
+    pdf.set_font('Arial', '', 9)
+    pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
+    pdf.multi_cell(w=190, h=5, txt=table_description)
+    pdf.set_xy(pdf.get_x(),pdf.get_y()+5)
+    pdf.image('table1.png',w=190)
+    
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 11) #setting font for title
+    pdf.cell(40, 0, 'Appendix A: Analysis per input skill', ln=2) #Write Title
     pdf.set_font('Arial', '', 9)
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
     pdf.multi_cell(w=190, h=5, txt=per_skill_description)
     pdf.set_xy(pdf.get_x(),pdf.get_y()+5)
     
-    for index, row in df.iterrows():
+    for index, row in df.iterrows(): #Per Skill Analysis
+    
         mean_score = df_cv_summary[df_cv_summary['cluster']==row['cluster']]['mean'].mean()
         mean_score_s = str(round(mean_score,2))
         score = round(row['score'],2)
-        text = "Input Skill "+str(index+1)+":\nYour input skill \""+row['skill']+"\" was clustered in cluster "+str(row['cluster'])+\
-        " which contains skills regarding "+cluster_label_bigrams[row['cluster']]+\
-        ". Your score for this skill is "+str(score)+"."
+        text = "Input Skill "+str(index+1)+": \""+row['skill']+"\"\nWas clustered in skill group \""+cluster_labels_unformated[row['cluster']]+\
+        "\". Your similarity score for this skill is "+str(score)+"."
         
         if score<mean_score:
             text = text + "This score is quite low, the average score among Data Scientist CV's is "+mean_score_s+" this may be due to a misclassification of our model but this could also indicate an opportunity to further clarify your CV."
@@ -133,12 +178,18 @@ def return_pdf(skills):
     
     pdf.add_page()
     pdf.set_font('Arial', 'B', 11) #setting font for title
-    pdf.cell(40, 0, 'Your score compared to Data Scientist CV\'s', ln=2) #Write Title
+    pdf.cell(40, 0, 'Appendix B: Methodology Explanation', ln=2) #Write Title
+    
+    #sketch workflow
+    pdf.set_font('Arial', 'I', 9) #setting font for text cells
+    pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
+    pdf.image('img/workflow.png',w=190)
+    pdf.multi_cell(w=190, h=5, txt = 'Functionality sketch of Skill Scanner backend')
     pdf.set_font('Arial', '', 9)
     pdf.set_xy(pdf.get_x(), pdf.get_y()+5)
-    pdf.multi_cell(w=190, h=5, txt=table_description)
+    pdf.multi_cell(w=190, h=5, txt=methodology_description)
     pdf.set_xy(pdf.get_x(),pdf.get_y()+5)
-    pdf.image('table1.png',w=190)
+        
     return pdf
    
 def get_plot(cv): #takes in list of skills and returns a plot with score for each cluster
@@ -191,8 +242,8 @@ def get_plot(cv): #takes in list of skills and returns a plot with score for eac
                           title = 'Input CV Similarity to Requirements in Job Postings',\
                           barmode='stack', \
                           legend_title_text = '', \
-                          yaxis_title="Importance",\
-                          xaxis_title="Coverage",\
+                          yaxis_title="<- Importance ->",\
+                          xaxis_title="<- Coverage ->",\
                           legend=dict(yanchor="bottom",y=0,xanchor="right",x=1
                         
                 ))
@@ -216,12 +267,27 @@ def get_table(scores):
     top50 = df_cv_summary['top50'].tolist()
     top50 = [round(num, 2) for num in top50]
     
+    fill_color = []
+    for score in scores:
+        if score<=top50[scores.index(score)]:#less then average
+            fill_color.append('#ffcccc')
+        elif score<=top25[scores.index(score)]:
+            fill_color.append('#fff5e6')
+        elif score<=top10[scores.index(score)]:
+            fill_color.append('#e6ffb3')                 
+        else:
+            fill_color.append('#ccffcc')
+    
+    print(fill_color)
     fig = go.Figure(data=[go.Table(
         columnwidth = [1100,100],
         header=dict(values=['Skill Cluster','Your Score','Average','Top 10%','Top 25%', 'Top 50%']),
-        cells=dict(values=[labels, scores,mean,top10,top25,top50]))])
-    
-    fig.update_layout(height = 4*300, width = 3*300)
+        
+        cells=dict(values=[labels, scores,mean,top10,top25,top50],
+              fill = dict(color=['rgb(245, 245, 255)',fill_color])
+                  )
+    )])
+    fig.update_layout(height = 3.4*300, width = 3*300,margin=go.layout.Margin(l=0, r=0,b=0, t=0 ))
     
     return(fig)
     
@@ -253,6 +319,49 @@ def get_overview(score):
     )])
     
     
-    fig.update_layout(height = 0.9*300, width = 3*300)
+    fig.update_layout(height = 1*300, width = 3*300,margin=go.layout.Margin(l=10, r=10,b=0, t=0 ))
     
     return(fig)
+
+def get_recommendation(df_cv):
+    recommendations = []
+    recommendation_scores=[]
+    recommendation_labels = []
+
+    for index, row in df_cv.iterrows():
+        if row['score']==0:
+            df_handbook_filtered = df_handbook[df_handbook['cluster']==row['cluster']]
+            if len(df_handbook_filtered)>0 and df_handbook_filtered['score'].max()>0.5:
+                recommendation = df_handbook_filtered['score'].argmax()
+                recommendation = df_handbook_filtered['module'].iloc[recommendation]
+                recommendation_label = "Recommended Module: <b>"+recommendation+'</b><br>Skill Group: '+row['labels']
+                
+                recommendations.append(recommendation)
+                recommendation_scores.append(df_handbook_filtered['score'].max())
+                recommendation_labels.append(recommendation_label)
+            else:
+                recommendations.append(None)
+                recommendation_scores.append(0)
+                recommendation_labels.append(None)
+        else:
+            recommendations.append(None)
+            recommendation_scores.append(0)
+            recommendation_labels.append(None)
+    df_cv['recommendation']=recommendations
+    df_cv['recommendation_score']=recommendation_scores
+    df_cv['recommendation_label']=recommendation_labels
+    df_cv['coverage of recommendation'] = df_cv['recommendation_score']*df_cv['Skill Group Importance']
+    df_cv['Recommendation Importance']=df_cv['Skill Group Importance']-df_cv['coverage of recommendation']
+    df_cv=df_cv[df_cv['recommendation_score']>0]
+    df_cv=df_cv.sort_values('Skill Group Importance',ascending=False)
+            
+    fig = px.bar(df_cv.head(5), y='recommendation_label', x=["coverage of recommendation","Recommendation Importance"])
+    fig.update_layout(height=2*300, width=3*300, \
+                         #font=dict(size=10),\
+                         title = 'Top 5 Study Program Module Recommendations <br>Program: IU International University - Data Scientist 60ECT',\
+                         barmode='stack', \
+                         legend_title_text = '', \
+                         yaxis_title="<- Importance ->",\
+                         xaxis_title="<- Coverage ->",\
+                         legend=dict(yanchor="bottom",y=0,xanchor="right",x=1))
+    return fig

@@ -1,0 +1,5 @@
+Are you considering formal education to upskill yourself? Skill Scanner helps you select the most appropriate programs and modules: 
+  *  we analyzed the curriculum of course "MSc - Data Science 60ECT" of IU International University of Applied Sciences. 
+  *  We analyzed which gaps in you CV can be filled by which modules 
+  *  We show the top 5 of module recommendations in the visual below. 
+** In the future more learning content will be analyzed so that Skill Scanner can help choose a fitting study program

@@ -36,26 +36,11 @@ Bootstrap(app)
 # see the route for "/" and "index.html" to see how this is used
 class NameForm(FlaskForm):
     Job_Title = SelectField(u'Job Title', choices=['Data Scientist','more to come'])
-    skill_1 = StringField('Please enter at least 2 skills', validators=[DataRequired()])
+    skill_1 = StringField('Please enter at least 2 skills, skill 1', validators=[DataRequired()])
     skill_2 = StringField(validators=[DataRequired()])
     skill_3 = StringField()
     skill_4 = StringField()
     skill_5 = StringField()
-    skill_6 = StringField()
-    skill_7 = StringField()
-    skill_8 = StringField()
-    skill_9 = StringField()
-    skill_10 = StringField()
-    skill_11 = StringField()
-    skill_12 = StringField()
-    skill_13 = StringField()
-    skill_14 = StringField()
-    skill_15 = StringField()
-    skill_16 = StringField()
-    skill_17 = StringField()
-    skill_18 = StringField()
-    skill_19 = StringField()
-    skill_20 = StringField()
     submit = SubmitField('Download Report')
 
 # all Flask routes below
@@ -74,21 +59,6 @@ def index():
         skills.append(form.skill_3.data)
         skills.append(form.skill_4.data)
         skills.append(form.skill_5.data)
-        skills.append(form.skill_6.data)
-        skills.append(form.skill_7.data)
-        skills.append(form.skill_8.data)
-        skills.append(form.skill_9.data)
-        skills.append(form.skill_10.data)
-        skills.append(form.skill_11.data)
-        skills.append(form.skill_12.data)
-        skills.append(form.skill_13.data)
-        skills.append(form.skill_14.data)
-        skills.append(form.skill_15.data)
-        skills.append(form.skill_16.data)
-        skills.append(form.skill_17.data)
-        skills.append(form.skill_18.data)
-        skills.append(form.skill_19.data)
-        skills.append(form.skill_20.data)
         
         skills_ = skills
         skills=[]
@@ -98,7 +68,7 @@ def index():
   
         pdf = return_pdf(skills)
         pdf.output('report.pdf', 'F')
-        return send_file('report.pdf', as_attachment=True)
+        return render_template('thanks.html'), send_file('report.pdf', as_attachment=True)
     return render_template('index.html', form=form, message=message)
 
 # 2 routes to handle errors - they have templates too

@@ -1,2 +1,1 @@
-Skill Scanner has extracted the 30 most important skill groups as required in Data Scientist job postings.
-Below you find how well your CV covers these skill groups.
+See how well your skills cover the most important skills for a Data Scientist.

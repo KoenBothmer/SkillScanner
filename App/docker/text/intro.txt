@@ -1,5 +1,5 @@
-Skill Scanner uses state of the art Natural Language Processing techniques to compare skills:
-  *  We compared your CV to employer demands for Data Scientists
-  *  We meassured how well your CV covers the skills of peer Data Scientists
-  *  We reccomend courses that fit the skill gaps in your CV
+Skill Scanner uses AI to compare skills:
+  1.  Comparisson to Demand: your skills compared to employer demands.
+  2.  Comparisson to Competition: your skills compared to representative CV's.
+  3.  Recommendation for Education: course recommendations that complement your CV.
 For an in depth explanation of our technique please refer to the last page.

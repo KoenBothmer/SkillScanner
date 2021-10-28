@@ -3,7 +3,7 @@
 
 {% block styles %}
 {{ super() }}
-	<title>Skill Scanner: CV Review</title>
+	<title>Skill Scanner: CV Review for JOB SEEKERS</title>
 	<style>
 		body { background: #e8f1f9; }
 	</style>
@@ -11,22 +11,25 @@
 
 
 {% block title %}
-Skill Scanner: CV Review - Data Scientist
+Skill Scanner: CV Review for JOB SEEKER- Data Scientist
 {% endblock %}
 
 
 {% block content %}
 
 <div class="container">
+
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-      <h1 class="pt-5 pb-2">Skill Scanner: CV Review - Data Scientist</h1>
+      <h1 class="pt-5 pb-2">Skill Scanner: CV Review for JOB SEEKERS - Data Scientist</h1>
+	  <img src="{{url_for('static', filename='triforce.png')}}" alt="Skill Scanner Interaction Diagram"><br>
+	  <i>Skill Scanner can support Job Seekers, Employers and Education. This example shows what Skill Scanner can achieve for JOB SEEKERS.</i>
 
       <p class="lead">Please enter at least 2 skills from your CV. Use one line for each skill. Note:
 	  <ul>
 	  <li><i>In the future you will be able to upload a CV to Skill Scanner.</li>
-	  <li>If you do not have time or are not a data scientist, <A href="../sample_report.pdf",target="_blank">download a <b>Sample Report</b> here</A>.</i></li><br><br>
+	  <li>If you do not have time or are not a data scientist, <A href="/sample_report",target="_blank">go download a <b>Sample Report</b> here</A>.</i></li><br><br>
       {{ wtf.quick_form(form) }}
 
       <p class="pt-5"><strong>{{ message }}</strong></p>

@@ -77,6 +77,10 @@ def index():
 def download(filename):
     return send_file(filename, as_attachment=True)
 
+@app.route('/sample_report')
+def go_to_end():
+    return render_template('thanks_sample.html', filename = 'sample_report.pdf')
+    
 # 2 routes to handle errors - they have templates too
 
 @app.errorhandler(404)

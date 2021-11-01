@@ -274,7 +274,8 @@ def get_overview(score):
     fig.update_xaxes(visible=False, showticklabels=False)
 
     fig.add_annotation(x=score,
-    text="Your Score: "+str(round(score)) + '%', y=0.2,
+    text="Your Score: <b>"+str(round(score)) + '</b>%', y=1.6,
+    font=dict(size=25),
     showarrow=False)
     
     fig.add_annotation(x=score,y=1,
@@ -282,13 +283,13 @@ def get_overview(score):
     showarrow=False,
     textangle=-90)
     
-    for val in vals:
-        fig.add_annotation(x=vals[vals.index(val)],#y=0,
-        font=dict(size=25),
-        text = str(val),
-        yshift = 0,                   
-        showarrow=True,
-        arrowhead=1)
+    #for val in vals:
+    #    fig.add_annotation(x=vals[vals.index(val)],#y=0,
+    #    font=dict(size=25),
+    #    text = str(val),
+    #    yshift = 0,                   
+    #    showarrow=True,
+    #    arrowhead=1)
     
     fig.add_annotation(x=vals[0], y=1,
             text="Needs Improvement",

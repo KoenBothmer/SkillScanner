@@ -1,4 +1,0 @@
-'Needs Improvement':	Your CV Coverage is outperformed by more than 50% of JOB SEEKERS
-'Fair':	                      	Your CV Coverage outperforms 50% of JOB SEEKERS
-'Good':	                 	Your CV Coverage outperforms 75% of JOB SEEKERS
-'Excellent':            	Your CV Coverage outperforms 90% of JOB SEEKERS

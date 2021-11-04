@@ -18,6 +18,9 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false" 
+
 k31_full = pickle.load(open('k_31_full', 'rb'))
 cluster_label_bigrams = pickle.load(open('cluster_label_bigrams','rb')) 
 cluster_importance = pickle.load(open('cluster_importance', 'rb'))
@@ -51,8 +54,8 @@ def return_pdf(skills):
     overview = get_overview(total_score)
     overview.write_image("overview1.png")
     
-    score_visual = get_score_visual(total_score)
-    score_visual.write_image("score1.png")
+    #score_visual = get_score_visual(total_score)
+    #score_visual.write_image("score1.png")
     
     pdf=FPDF('P', 'mm', 'A4')
     pdf.add_page()
@@ -78,13 +81,7 @@ def return_pdf(skills):
     
     pdf.set_xy(10, pdf.get_y()+15)
     pdf.set_font('Arial','B',11)
-    pdf.cell(40, 0, "Your total CV Coverage Score is:")
-    pdf.set_xy(pdf.get_x() +30, pdf.get_y()-7.5)
-    pdf.image('score1.png', w=50)
-    
-    pdf.set_xy(10, pdf.get_y()+10)
-    pdf.set_font('Arial', 'B', 11) #setting font for title
-    pdf.cell(40, 0, 'What is a good Coverage Score?')
+    pdf.cell(40, 0, "Your total CV Coverage Score:") 
     
     pdf.set_xy(10, pdf.get_y()+5)
     pdf.image('overview1.png', w=200)
@@ -279,7 +276,7 @@ def get_overview(score):
     showarrow=False)
     
     fig.add_annotation(x=score,y=1,
-    text="────────────",
+    text="───────────────",
     showarrow=False,
     textangle=-90)
     

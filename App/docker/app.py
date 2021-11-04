@@ -69,17 +69,13 @@ def index():
         pdf = return_pdf(skills)
         pdf.output('report.pdf', 'F')
         
-        send_file('report.pdf', as_attachment=True)
-        return render_template('thanks.html', filename = 'report.pdf')#, as_attachment=True)
+        return send_file('report.pdf', as_attachment=True)
+        #return render_template('thanks.html', filename = 'report.pdf')#, as_attachment=True)
     return render_template('index.html', form=form, message=message)
-
-@app.route('/thanks/<filename>')
-def download(filename):
-    return send_file(filename, as_attachment=True)
 
 @app.route('/sample_report')
 def go_to_end():
-    return render_template('thanks_sample.html', filename = 'sample_report.pdf')
+    return send_file('sample_report.pdf', as_attachment=True)
     
 # 2 routes to handle errors - they have templates too
 

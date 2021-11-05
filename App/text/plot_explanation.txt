@@ -1,2 +1,0 @@
-The clustering analysis of your input data is summarized in the plot below. The length of each red bar represents the importance which was determined by how often a cluster appears in vacancy texts. 
-The lenght of the blue bar represents how well your input skillset covers the red bar. Please note that it is not possbile to attain a score of 100%, a score of over 0.72% places in the top 10% of representation and can be considered excellent.

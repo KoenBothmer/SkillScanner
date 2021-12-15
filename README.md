@@ -8,7 +8,7 @@ To guarantee identical dependencies it is reccomended to run this code from the 
 # Launch
 Set-up:
 - Make sure to have Git, Docker and Chrome installed on your local machine
-- Clone the repository a folder referred to as "\yourdir"
+- Clone this repository to a folder referred to as "\yourdir"
 - Run "launch.bat" which will set this repository as 'origin', pull any updates to the master branch, compose the required docker container, launch Chrome to the exposed port of the Jupyter notebook (localhost:8889)
-- Please note: if Chrome is not installed or not added to command prompt path it will not run, you can navigate to localhost:8888 using the browser of your choice
+- Please note: if Chrome is not installed or not added to command prompt path it will not run, you can navigate to localhost:8889 using the browser of your choice
 - The token is "Thesis"

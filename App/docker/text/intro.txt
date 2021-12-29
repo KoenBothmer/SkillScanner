@@ -1,5 +1,0 @@
-Skill Scanner used AI to compare your skills:
-  1.  Comparison to Competition: your skills compared to representative CV's.
-  2.  Fit to Demand: Insight in your skill gaps from comparing your CV to employer demands.
-  3.  Find and Select: Recommendations for Education to fill your skill gaps.
-  **For an in depth explanation of our technique please refer to the last page.

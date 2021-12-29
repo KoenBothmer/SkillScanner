@@ -1,0 +1,14 @@
+datasets/df_cv.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_full.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_handbook_DS_60.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_k31_k39.csv filter=lfs diff=lfs merge=lfs -text
+datasets/evaluation_sample.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_toy.csv filter=lfs diff=lfs merge=lfs -text
+datasets/edx_courses.csv filter=lfs diff=lfs merge=lfs -text
+datasets/evaluation_sample_labeled.csv filter=lfs diff=lfs merge=lfs -text
+datasets/data_scientist_united_states_job_postings_jobspikr.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_cleaned_by_dbscan.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_europe.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_r.csv filter=lfs diff=lfs merge=lfs -text
+datasets/df_sim_cv_all.csv filter=lfs diff=lfs merge=lfs -text
+datasets/resume_samples.txt filter=lfs diff=lfs merge=lfs -text

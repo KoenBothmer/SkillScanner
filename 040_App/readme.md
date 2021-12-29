@@ -1,7 +1,7 @@
 ## Launch
 To run the app locally:
-	- Clone this repository 
-	- Open a command shell
+	- Clone this repository \n
+	- Open a command shell \n
 	- Navigate to ./04_app
 	- Build the docker image: Run command "docker build --tag embeddings ."
 	- Run the image and publish the app to port 5000 of localhost: run "docker run --publish 5000:5000 embeddings"

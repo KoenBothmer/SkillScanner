@@ -1,7 +1,7 @@
-## Code supporting my master Thesis thesis "Artificial Intelligence Driven Methods for the Analysis of Job Postings"
+## Code supporting our paper "Skill Scanner: Connecting and Supporting Employers, Job Seekers and Educational Institutions with an AI-based Recommendation System"
 
 # Please Note:
-For some reason, Github sometimes randomly fails to render the notebooks as provided. The notebooks can be viewed without having to download it to your own Jupyter instance through nbviewer: https://nbviewer.jupyter.org/github/KoenBothmer/thesis/.
+For some reason, Github sometimes randomly fails to render the notebooks as provided. The notebooks can be viewed without having to download it to your own Jupyter instance through nbviewer: https://nbviewer.jupyter.org/github/KoenBothmer/SkillScanner/.
 
 # Main Idea:
 We use artificial intelligence methods to extract and compare skills from job postings, CVs and learning curricula.
@@ -11,7 +11,7 @@ We use artificial intelligence methods to extract and compare skills from job po
   - Along the way we conducted several experiments which are archived in folder A_miscellaneous.
 
 ## Launch
-The repository has different uses, for each use the provided software should be used in an appropriate way:
+The repository has different use cases, for each use case the provided software should be used in an appropriate way:
 
 # Viewing of conducted experiments
 In order to only view the notebooks that describe our experiments there is no need to clone this repo. The content of all notebooks can be viewed through Github but we recommend viewing them through nbviewer: https://nbviewer.jupyter.org/github/KoenBothmer/thesis/.
